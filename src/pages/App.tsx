@@ -1,25 +1,23 @@
 import React from 'react';
-import logo from '../assets/github-avatar.svg';
-import '../styles/App.css';
+import makeStyles from '@material-ui/styles/makeStyles';
+import Box from '@material-ui/core/Box';
+import Banner from '../components/Banner';
+
+const useStyles = makeStyles(() => ({
+  appContainer: {
+    display: 'flex',
+    flexFlow: 'column wrap',
+    justifyContent: 'center'
+  }
+}));
 
 function App() {
+  const classes = useStyles();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hello World!
-        </a>
-      </header>
-    </div>
+    <Box m={4} className={classes.appContainer}>
+      <Banner />
+    </Box>
   );
 }
 
