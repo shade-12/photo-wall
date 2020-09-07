@@ -43,9 +43,6 @@ const uploadPhoto = multer({
       s3: s3,
       bucket: process.env.S3_BUCKET_NAME,
       acl: 'public-read',
-      metadata: (req, file, cb) => {
-        cb(null, { fieldName: file.fieldname });
-      },
       key: (req, file, cb) => {
           cb(null, new Date().toISOString() + '-' + file.originalname);
       }
@@ -55,8 +52,20 @@ const uploadPhoto = multer({
   }
 }).single('photo');
 
+/**
+ * Get all photos from S3 bucket
+ * 
+ * @return {Promise}
+ */
+const getPhotos = () => {
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME
+  };
+  return s3.listObjects(params).promise();
+};
 
-app.post('/upload', (req, res) => {
+
+app.post('/photos/upload', (req, res) => {
   uploadPhoto(req, res, (err) => {
     if (err) {
       console.log(`awsService::uploadPhoto::error - ${JSON.stringify(err)}`);
@@ -72,6 +81,17 @@ app.post('/upload', (req, res) => {
   });
 });
 
+app.get('/photos', (req, res) => {
+  getPhotos()
+  .then(data => {
+    console.log(`awsService::getPhotos::success - ${JSON.stringify(data.Contents, null, 2)}`);
+    res.status(200).send(data.Contents);
+  })
+  .catch(err => {
+    console.log(`awsService::getPhotos::error - ${JSON.stringify(err)}`);
+    res.status(422).send(`Service error: path="/photos" method="GET".`)
+  });
+});
 
 app.get('/', (req, res) => {
   res.send('<h1>My Express Server :|</h1>');

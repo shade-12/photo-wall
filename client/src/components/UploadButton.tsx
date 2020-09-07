@@ -42,10 +42,10 @@ function UploadButton() {
             alert('Please upload a photo smaller than 5 MB.');
         if(!isValidFileFormat(event.target.files[0].type))
             alert('Only JPG, PNG, GIF and SVG photos are supported at this time.');
-            
+
         uploadPhoto(event.target.files[0])
-        .then(res => console.log('Upload success: ', res))
-        .catch(err => console.log('Upload failed: ', err));
+        .then(res => console.log(`uploadPhoto::success - ${res}`))
+        .catch(err => console.log(`uploadPhoto::error - ${err}`));
     };
 
 	return (
