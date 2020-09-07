@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const port = 8080;
 require('dotenv').config();
 
 app.use(bodyParser.json({ limit: '5mb', extended: true }))
@@ -97,6 +96,7 @@ app.get('/', (req, res) => {
   res.send('<h1>My Express Server :|</h1>');
 });
 
-app.listen(port, () => {
+const server = app.listen(process.env.PORT || 8080, () => {
+  const port = server.address().port;
   console.log(`Listening on PORT ${port}`);
 });
