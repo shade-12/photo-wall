@@ -44,15 +44,22 @@ function UploadButton(props: IUploadButtonProps) {
     const { startRearrange } = props;
     
     const uploadImage = (event: any) => {
-        if (event.target.files.length < 1)
+        if (event.target.files.length < 1) {
             alert('Please select a photo to upload.');
-        if (event.target.files.length > 1)
+            return;
+        }
+        if (event.target.files.length > 1) {
             alert('Please upload one photo at a time.');
-        if(event.target.files[0].size > maxFileSize)
+            return;
+        }
+        if(event.target.files[0].size > maxFileSize) {
             alert('Please upload a photo smaller than 5 MB.');
-        if(!isValidFileFormat(event.target.files[0].type))
+            return;
+        } 
+        if(!isValidFileFormat(event.target.files[0].type)) {
             alert('Only JPG, PNG, GIF and SVG photos are supported at this time.');
-
+            return;
+        }
         uploadPhoto(event.target.files[0])
         .then(res => {
             if (process.env.NODE_ENV !== 'production')
