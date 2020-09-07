@@ -20,7 +20,7 @@ function PhotoContainer() {
 	const classes = useStyles();
 
 	return (
-		<Box mt={2} className={classes.root}>
+		<Box className={classes.root}>
             <GridList cellHeight={300} spacing={8} cols={5}>
                 {tileData.map((tile) => (
                     <GridListTile key={tile.img} cols={tile.cols || 1}>
