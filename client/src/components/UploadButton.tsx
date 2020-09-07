@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import uploadPhoto from '../services/uploadPhoto';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,8 +42,10 @@ function UploadButton() {
             alert('Please upload a photo smaller than 5 MB.');
         if(!isValidFileFormat(event.target.files[0].type))
             alert('Only JPG, PNG, GIF and SVG photos are supported at this time.');
-        
-        console.log(event.target.files);
+            
+        uploadPhoto(event.target.files[0])
+        .then(res => console.log('Upload success: ', res))
+        .catch(err => console.log('Upload failed: ', err));
     };
 
 	return (
