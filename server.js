@@ -85,7 +85,7 @@ app.get('/photos', (req, res) => {
   getPhotos()
   .then(data => {
     console.log(`awsService::getPhotos::success - ${JSON.stringify(data.Contents, null, 2)}`);
-    res.status(200).send(data.Contents.map(object => object.Key));
+    res.status(200).send(data.Contents.map(object => object.Key).reverse());
   })
   .catch(err => {
     console.log(`awsService::getPhotos::error - ${JSON.stringify(err)}`);

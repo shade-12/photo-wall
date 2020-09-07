@@ -16,15 +16,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 /**
- * Generate a random integer between 1 and @param maxVal, inclusive
- * @param {Number} maxVal The largest possible number that can be generated
- * @return {Number} A random integer between 1 and @param maxVal, inclusive
- */
-const getRandomInt = (maxVal: number) :number => {
-  return Math.floor(Math.random() * Math.floor(maxVal)) + 1;
-};
-
-/**
  * Generate an array of photo data
  * @param {String[]} photoKeys An array of object keys
  * @return {Photo[]} 
@@ -33,8 +24,7 @@ const generateTileData = (photoKeys: string[]) :IPhoto[] => {
   return photoKeys.map((key :string) => {
     return {
       src: process.env.REACT_APP_IMG_BASE_URL + key,
-      title: key.substring(25),
-      cols: getRandomInt(5)
+      title: key.substring(25)
     };
   });
 };
@@ -48,18 +38,30 @@ function App() {
   const fetchLatestPhotos = () => {
     getPhotos()
     .then(res => {
-      console.log(`getPhotos::success - ${JSON.stringify(res.data, null, 2)}`);
+      if (process.env.NODE_ENV !== 'production')
+        console.log(`getPhotos::success - ${JSON.stringify(res.data, null, 2)}`);
       const tileData = generateTileData(res.data);
-      console.log(`generateTileData::info - ${JSON.stringify(tileData, null, 2)}`);
+      if (process.env.NODE_ENV !== 'production')
+        console.log(`generateTileData::info - ${JSON.stringify(tileData, null, 2)}`);
       setPhotoArray(tileData);
     })
     .catch(err => console.log(`getPhotos::error - ${err}`));
   };
 
+  const updatePhotoArray = (fileUrl: string) => {
+    const newPhoto = {
+      src: fileUrl,
+      title: fileUrl.substring(80)
+    };
+    if (process.env.NODE_ENV !== 'production')
+      console.log(`updatePhotoArray::info - ${JSON.stringify(newPhoto, null, 2)}`);
+    setPhotoArray(prevArr => [newPhoto].concat(prevArr));
+  };
+
   return (
     <Box m={4} className={classes.appContainer}>
       <Banner />
-      <UploadButton cb={fetchLatestPhotos} />
+      <UploadButton cb={updatePhotoArray} />
       <PhotoContainer photoArray={photoArray} />
     </Box>
   );

@@ -49,9 +49,10 @@ function UploadButton(props: IUploadButtonProps) {
 
         uploadPhoto(event.target.files[0])
         .then(res => {
-            console.log(`uploadPhoto::success - ${res}`);
+            if (process.env.NODE_ENV !== 'production')
+                console.log(`uploadPhoto::success - ${res.data}`);
             if (typeof props.cb === 'function')
-                props.cb();
+                props.cb(res.data);
             return;
         })
         .catch(err => console.log(`uploadPhoto::error - ${err}`));
