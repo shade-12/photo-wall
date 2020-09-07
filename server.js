@@ -68,7 +68,7 @@ app.post('/photos/upload', (req, res) => {
   uploadPhoto(req, res, (err) => {
     if (err) {
       console.log(`awsService::uploadPhoto::error - ${JSON.stringify(err)}`);
-      res.status(422).send(`Service error: path="/upload" method="POST".`);
+      res.status(422).send(`Service error: path="/photos/upload" method="POST".`);
     } else {
       if (req.file === undefined)
         res.status(422).send(`User error: No File Selected.`);
