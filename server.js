@@ -9,7 +9,7 @@ app.use(bodyParser.json({ limit: '5mb', extended: true }))
    .use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
 // CORS configuration
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', 'https://shade-12.github.io/photo-wall'];
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) 
