@@ -32,6 +32,7 @@ const generateTileData = (photoKeys: string[]) :IPhoto[] => {
 function App() {
   const classes = useStyles();
   const [photoArray, setPhotoArray] = useState<IPhoto[] | any[]>([]);
+  const [rearrange, setRearrange] = useState<boolean>(false);
 
   useEffect(() => fetchLatestPhotos(), []);
 
@@ -44,6 +45,7 @@ function App() {
       if (process.env.NODE_ENV !== 'production')
         console.log(`generateTileData::info - ${JSON.stringify(tileData, null, 2)}`);
       setPhotoArray(tileData);
+      setRearrange(true);
     })
     .catch(err => console.log(`getPhotos::error - ${err}`));
   };
@@ -56,13 +58,24 @@ function App() {
     if (process.env.NODE_ENV !== 'production')
       console.log(`updatePhotoArray::info - ${JSON.stringify(newPhoto, null, 2)}`);
     setPhotoArray(prevArr => [newPhoto].concat(prevArr));
+    setRearrange(true);
+  };
+
+  const startRearrange = () => {
+    console.log(`startRearrange::info - running...`);
+    setRearrange(true);
+  };
+
+  const doneRearrange = () => {
+    console.log(`doneRearrange::info - done.`);
+    setRearrange(false);
   };
 
   return (
     <Box m={4} className={classes.appContainer}>
       <Banner />
-      <UploadButton cb={updatePhotoArray} />
-      <PhotoContainer photoArray={photoArray} />
+      <UploadButton cb={updatePhotoArray} startRearrange={startRearrange} />
+      <PhotoContainer photoArray={photoArray} rearrange={rearrange} doneRearrange={doneRearrange} />
     </Box>
   );
 }

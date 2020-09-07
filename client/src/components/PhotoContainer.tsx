@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import GridList from '@material-ui/core/GridList';
@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IPhotoContainerProps {
-    photoArray: IPhoto[]
+    photoArray: IPhoto[],
+    rearrange: boolean,
+    doneRearrange: Function
 };
 
 const MAX_COLS = 5;
@@ -33,13 +35,19 @@ const getRandomInt = (maxVal: number) :number => {
 
 function PhotoContainer(props: IPhotoContainerProps) {
     const classes = useStyles();
-    const { photoArray } = props;
+    const { photoArray, rearrange, doneRearrange } = props;
+    const [tiles, setTiles] = useState<typeof GridListTile[] | any[]>([]);
+
+    useEffect(() => {
+        if (rearrange)
+            rearrangeTiles();
+    }, [rearrange]);
 
     const rearrangeTiles = () => {
         if (process.env.NODE_ENV !== 'production')
             console.log(`rearrangeTiles::info - running...`);
         let availableCols: number = MAX_COLS;
-        return photoArray.map((tile) => {
+        const arrangedTiles = photoArray.map((tile) => {
             let cols: number = Math.min(getRandomInt(MAX_COLS), availableCols);
             if (cols < availableCols)
                 availableCols -= cols;
@@ -49,12 +57,14 @@ function PhotoContainer(props: IPhotoContainerProps) {
                         <img src={tile.src} alt={tile.title} />
                     </GridListTile>
         });
+        setTiles(arrangedTiles);
+        doneRearrange();
     };
 
 	return (
 		<Box className={classes.root}>
             <GridList cellHeight={300} spacing={8} cols={MAX_COLS}>
-                {rearrangeTiles()}
+                {tiles}
             </GridList>
         </Box>
 	);

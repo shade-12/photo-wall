@@ -3,6 +3,7 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import uploadPhoto from '../services/uploadPhoto';
 
@@ -12,7 +13,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            '& > *': {
+                margin: theme.spacing(0.5)
+            }
         },
         button: {
             textTransform: 'none'
@@ -24,7 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IUploadButtonProps {
-    cb?: Function
+    cb?: Function,
+    startRearrange: Function
 };
 
 const isValidFileFormat = (type: string) :boolean => {
@@ -36,6 +41,7 @@ const maxFileSize = 5000000; // 5MB
 
 function UploadButton(props: IUploadButtonProps) {
     const classes = useStyles();
+    const { startRearrange } = props;
     
     const uploadImage = (event: any) => {
         if (event.target.files.length < 1)
@@ -80,6 +86,17 @@ function UploadButton(props: IUploadButtonProps) {
                     </Button>
                 </Typography>
             </label>
+            <Typography variant="h6">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AutorenewIcon />}
+                    className={classes.button}
+                    onClick={() => startRearrange()}
+                >
+                    <b>Generate different layout</b>
+                </Button>
+            </Typography>
         </Box>
 	);
 }
