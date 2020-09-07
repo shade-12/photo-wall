@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+interface IUploadButtonProps {
+    cb?: Function
+};
+
 const isValidFileFormat = (type: string) :boolean => {
     const validFormat = ["image/jpeg", "image/jpg", "image/png", "image/svg", "image/gif"];
     return validFormat.includes(type);
@@ -30,7 +34,7 @@ const isValidFileFormat = (type: string) :boolean => {
 
 const maxFileSize = 5000000; // 5MB
 
-function UploadButton() {
+function UploadButton(props: IUploadButtonProps) {
     const classes = useStyles();
     
     const uploadImage = (event: any) => {
@@ -44,7 +48,12 @@ function UploadButton() {
             alert('Only JPG, PNG, GIF and SVG photos are supported at this time.');
 
         uploadPhoto(event.target.files[0])
-        .then(res => console.log(`uploadPhoto::success - ${res}`))
+        .then(res => {
+            console.log(`uploadPhoto::success - ${res}`);
+            if (typeof props.cb === 'function')
+                props.cb();
+            return;
+        })
         .catch(err => console.log(`uploadPhoto::error - ${err}`));
     };
 
@@ -73,5 +82,9 @@ function UploadButton() {
         </Box>
 	);
 }
+
+UploadButton.defaultProps = {
+    cb: () => {}
+};
 
 export default UploadButton;

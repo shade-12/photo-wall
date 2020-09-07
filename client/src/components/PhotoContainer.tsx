@@ -3,7 +3,7 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import tileData from '../tileData';
+import { IPhoto } from '../interfaces';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -16,15 +16,20 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function PhotoContainer() {
-	const classes = useStyles();
+interface IPhotoContainerProps {
+    photoArray: IPhoto[]
+};
+
+function PhotoContainer(props: IPhotoContainerProps) {
+    const classes = useStyles();
+    const { photoArray } = props;
 
 	return (
 		<Box className={classes.root}>
             <GridList cellHeight={300} spacing={8} cols={5}>
-                {tileData.map((tile) => (
-                    <GridListTile key={tile.img} cols={tile.cols || 1}>
-                        <img src={tile.img} alt={tile.title} />
+                {photoArray.map((tile) => (
+                    <GridListTile key={tile.src} cols={tile.cols || 1}>
+                        <img src={tile.src} alt={tile.title} />
                     </GridListTile>
                 ))}
             </GridList>
