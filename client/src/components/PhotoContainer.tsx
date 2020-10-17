@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import GridList from '@material-ui/core/GridList';
@@ -38,12 +38,7 @@ function PhotoContainer(props: IPhotoContainerProps) {
     const { photoArray, rearrange, doneRearrange } = props;
     const [tiles, setTiles] = useState<typeof GridListTile[] | any[]>([]);
 
-    useEffect(() => {
-        if (rearrange)
-            rearrangeTiles();
-    }, [rearrange]);
-
-    const rearrangeTiles = () => {
+    const rearrangeTiles = useCallback(() => {
         if (process.env.NODE_ENV !== 'production')
             console.log(`rearrangeTiles::info - running...`);
         let availableCols: number = MAX_COLS;
@@ -59,7 +54,12 @@ function PhotoContainer(props: IPhotoContainerProps) {
         });
         setTiles(arrangedTiles);
         doneRearrange();
-    };
+    }, [doneRearrange, photoArray]);
+
+    useEffect(() => {
+        if (rearrange)
+            rearrangeTiles();
+    }, [rearrange, rearrangeTiles]);
 
 	return (
 		<Box className={classes.root}>
