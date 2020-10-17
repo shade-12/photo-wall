@@ -67,24 +67,6 @@ function Banner() {
 						href="https://www.linkedin.com/in/shade-wong-ab4a91192/"
 						target="_blank"
 					/>
-					<Chip
-						label="Email"
-						clickable
-						color="secondary"
-						icon={<EmailIcon fontSize="small" />}
-						component="a"
-						href="mailto:shadeying@alumni.ubc.ca"
-						target="_blank"
-					/>
-					<Chip
-						label="Résumé"
-						clickable
-						color="primary"
-						icon={<DescriptionIcon fontSize="small" />}
-						component="a"
-						href="https://drive.google.com/file/d/1v4IVJ_GtVa7t8C5I-ntOXouewwRu63Pa/view?usp=sharing"
-						target="_blank"
-					/>
 				</Grid>
 			</Grid>
 			
